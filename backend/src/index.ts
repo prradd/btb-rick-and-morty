@@ -1,14 +1,17 @@
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
 import authRoutes from './auth';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+const corsOptions = {
+  origin: 'http://localhost:3000', // Allow requests from the frontend
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 app.use('/api/auth', authRoutes);
