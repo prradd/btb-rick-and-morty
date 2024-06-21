@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import {
-  TextField, List, ListItem, ListItemText, Paper, Grid, Button,
+  TextField, List, ListItem, ListItemText, Paper, Grid, Button, ClickAwayListener,
 } from '@mui/material';
 import { styled } from '@mui/system';
 
@@ -15,6 +15,14 @@ interface SearchBarProps<T> {
 
 const SuggestionListItem = styled(ListItem)({
   cursor: 'pointer',
+});
+
+const SuggestionsContainer = styled(Paper)({
+  position: 'absolute',
+  width: '100%',
+  maxHeight: 260,
+  overflow: 'auto',
+  zIndex: 1,
 });
 
 function SearchBar<T extends unknown>({
@@ -63,38 +71,56 @@ function SearchBar<T extends unknown>({
     }
   };
 
+  const handleClickAway = () => {
+    setSuggestions([]);
+  };
+
+  useEffect(() => {
+    if (suggestions.some(suggestion => getSuggestionLabel(suggestion) === inputValue)) {
+      setSuggestions([]);
+    }
+  }, [inputValue, suggestions, getSuggestionLabel]);
+
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} position="relative" mb={2}>
       <Grid item xs={12} sm={8}>
-        <TextField
-          label={placeholder}
-          value={inputValue}
-          onChange={e => setInputValue(e.target.value)}
-          onKeyDown={handleKeyDown}
-          margin="normal"
-          fullWidth
-        />
-        {suggestions.length > 0 && (
-          <Paper style={{ maxHeight: 200, overflow: 'auto' }}>
-            <List>
-              {suggestions.map((suggestion, index) => (
-                <SuggestionListItem key={index} onClick={() => handleSelectSuggestion(suggestion)}>
-                  <ListItemText primary={getSuggestionLabel(suggestion)} />
-                </SuggestionListItem>
-              ))}
-            </List>
-          </Paper>
-        )}
-      </Grid>
-      <Grid item xs={12} sm={4} display="flex" alignItems="center">
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleSearch}
-          style={{ height: 'fit-content' }}
-        >
-          Search
-        </Button>
+        <Grid container spacing={2}>
+          <Grid item xs={8} position="relative">
+            <ClickAwayListener onClickAway={handleClickAway}>
+              <div>
+                <TextField
+                  label="Search"
+                  value={inputValue}
+                  onChange={e => setInputValue(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder={placeholder}
+                  fullWidth
+                />
+                {suggestions.length > 0 && (
+                  <SuggestionsContainer>
+                    <List>
+                      {suggestions.map((suggestion, index) => (
+                        <SuggestionListItem key={index} onClick={() => handleSelectSuggestion(suggestion)}>
+                          <ListItemText primary={getSuggestionLabel(suggestion)} />
+                        </SuggestionListItem>
+                      ))}
+                    </List>
+                  </SuggestionsContainer>
+                )}
+              </div>
+            </ClickAwayListener>
+          </Grid>
+          <Grid item xs={4} sm={4} display="flex" alignItems="center">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleSearch}
+              style={{ height: '60px' }}
+            >
+              Search
+            </Button>
+          </Grid>
+        </Grid>
       </Grid>
     </Grid>
   );
