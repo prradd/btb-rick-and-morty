@@ -1,4 +1,4 @@
-import ProtectedPage from './protected/page';
+import ProtectedPage from '@/components/protected';
 
 export default function Home() {
   return (
