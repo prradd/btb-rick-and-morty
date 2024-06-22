@@ -13,16 +13,14 @@ export const authenticate = async (username: string, password: string): Promise<
     });
 
     if (!response.ok) {
-      throw new Error('Network response was not ok');
+      throw new Error('Authentication failed');
     }
 
     const data = await response.json();
-
     if (data.token) {
       localStorage.setItem('user', JSON.stringify(data));
       return data;
     }
-
     return null;
   } catch (error) {
     console.error('Authentication failed', error);

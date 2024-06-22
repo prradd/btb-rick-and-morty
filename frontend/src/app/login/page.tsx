@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { authenticate } from '@/services/AuthService';
-import { Button, TextField, Container, Box } from '@mui/material';
+import { Button, TextField, Container, Box, Typography } from '@mui/material';
 
 const Login = () => {
   const router = useRouter();
@@ -10,10 +10,9 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = () => {
-    const user = authenticate(username, password);
+  const handleSubmit = async () => {
+    const user = await authenticate(username, password);
     if (user) {
-      localStorage.setItem('user', JSON.stringify(user));
       router.push('/');
     } else {
       setError('Invalid credentials');
@@ -28,6 +27,8 @@ const Login = () => {
           value={username}
           onChange={e => setUsername(e.target.value)}
           margin="normal"
+          InputLabelProps={{ shrink: true }}
+          fullWidth
         />
         <TextField
           label="Password"
@@ -35,9 +36,11 @@ const Login = () => {
           value={password}
           onChange={e => setPassword(e.target.value)}
           margin="normal"
+          InputLabelProps={{ shrink: true }}
+          fullWidth
         />
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <Button variant="contained" color="primary" onClick={handleSubmit}>
+        {error && <Typography color="error">{error}</Typography>}
+        <Button variant="contained" color="primary" onClick={handleSubmit} style={{ marginTop: '20px' }}>
           Login
         </Button>
       </Box>
