@@ -57,6 +57,11 @@ npm run docker:stop
 - **Frontend:**  Next.js, React, TypeScript, Material-UI
 - **Backend:** Node.js, Express, TypeScript, JWT, bcrypt
 
+## Requirements
+- **Node.js** v20.0.0 or higher
+- **npm** v10.7.0 or higher
+- **Docker** (optional)
+
 ## License
 This project is licensed under the MIT License.
 
