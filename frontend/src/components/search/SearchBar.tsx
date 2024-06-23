@@ -50,9 +50,9 @@ function SearchBar<T extends unknown>({
     });
   }, [inputValue, fetchData]);
 
-  const handleSearch = async () => {
+  const handleSearch = async (value: string) => {
     try {
-      const results = await fetchData(inputValue);
+      const results = await fetchData(value);
       onSearch(results);
     } catch {
       onSearch([]);
@@ -61,13 +61,14 @@ function SearchBar<T extends unknown>({
   };
 
   const handleSelectSuggestion = async (suggestion: T) => {
-    setInputValue(getSuggestionLabel(suggestion));
-    await handleSearch();
+    const suggestionLabel = getSuggestionLabel(suggestion);
+    setInputValue(suggestionLabel);
+    await handleSearch(suggestionLabel);
   };
 
   const handleKeyDown = async (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Enter') {
-      await handleSearch();
+      await handleSearch(inputValue);
     }
   };
 
@@ -114,7 +115,7 @@ function SearchBar<T extends unknown>({
             <Button
               variant="contained"
               color="primary"
-              onClick={handleSearch}
+              onClick={() => handleSearch(inputValue)}
               style={{ height: '60px' }}
             >
               Search
