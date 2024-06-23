@@ -3,6 +3,11 @@
 ## Description
 This project is a web application built using Next.js and TypeScript for the frontend, and Node.js with Express for the backend. It features authentication, data fetching from the Rick and Morty API, and different user roles (admin and non-admin) with specific feature access.
 
+### Users for testing
+- **Admin:** username: admin, password: admin123
+- **Non-Admin:** username: user, password: user123
+
+## Installation
 Both frontend and backend might be installed from the root run concurrently using those commands:
 
 ```bash
@@ -25,7 +30,7 @@ npm run docker:stop
 ## Features
 - Authentication: JWT-based login functionality.
 - User Roles: Admin and non-admin with different access levels.
-- Data Fetching: Fetches characters and episodes from the Rick and Morty API.
+- Data Fetching: Fetches characters, locations and episodes from the Rick and Morty API.
 - Search: Real-time search with autocomplete suggestions.
 - Responsive Design: Works across various screen sizes.
 
